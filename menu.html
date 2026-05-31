@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DineQR — Online Interactive Menu</title>
+  <meta name="description" content="View our rich digital menu and build your order dynamically to send directly via WhatsApp. Pure static, ultra fast.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Mobile-first Stylesheet -->
+  <link rel="stylesheet" href="css/menu.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Menu App Container -->
+  <div class="menu-app-wrapper theme-gold" id="menu-app-container">
+    
+    <!-- Top Hero Section / Branding Header -->
+    <header class="menu-hero">
+      <div class="brand-badge-container">
+        <div class="brand-logo" id="res-logo">🍔</div>
+      </div>
+      <h2 class="res-title" id="res-name">Loading Menu...</h2>
+      <p class="res-address" id="res-address"></p>
+      
+      <!-- Brand Contact Row -->
+      <div class="brand-contact" id="res-contact-bar">
+        <a href="#" class="contact-pill" id="res-btn-phone">
+          <i data-lucide="phone"></i> Call Us
+        </a>
+        <a href="#" target="_blank" class="contact-pill" id="res-btn-map">
+          <i data-lucide="map-pin"></i> Directions
+        </a>
+      </div>
+    </header>
+
+    <!-- Interactive Sticky Categories Navbar -->
+    <nav class="sticky-nav-bar" id="category-nav">
+      <div class="nav-scroll-container" id="category-nav-scroll">
+        <!-- Loaded dynamically e.g. <a href="#starters" class="nav-pill active">Starters</a> -->
+      </div>
+    </nav>
+
+    <!-- Main Dining Menu Body -->
+    <main class="menu-container">
+      <div id="menu-items-grid" class="menu-items-grid">
+        <!-- Loaded dynamically -->
+      </div>
+    </main>
+
+    <!-- Interactive Bottom Cart & Ordering System -->
+    <div class="cart-floating-bar hidden" id="cart-footer">
+      <div class="cart-bar-container">
+        <div class="cart-summary">
+          <span class="cart-count-badge" id="cart-qty">0 items</span>
+          <span class="cart-subtotal" id="cart-total">$0.00</span>
+        </div>
+        <button class="btn-whatsapp-order" id="btn-whatsapp-order">
+          <i data-lucide="shopping-cart"></i>
+          <span>Order via WhatsApp</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty/Error State Modal -->
+    <div class="empty-state-screen hidden" id="error-screen">
+      <div class="empty-state-card">
+        <div class="empty-icon"><i data-lucide="alert-triangle"></i></div>
+        <h3>Menu Not Loaded</h3>
+        <p>No valid menu URL was provided. Please return to the generator page to configure a valid menu draft.</p>
+        <a href="index.html" class="btn-back-generator">
+          <i data-lucide="sliders"></i> Open Generator
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Menu Dynamic Core JavaScript -->
+  <script src="js/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DineQR — Premium QR Menu Generator</title>
+  <meta name="description" content="Generate beautiful, serverless digital menus with QR codes for your restaurant in seconds. Fully responsive, premium design.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/generator.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- QRCode.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- Premium Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i data-lucide="qr-code"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Dine<span>QR</span></h1>
+          <p>PREMIUM MENU GENERATOR</p>
+        </div>
+      </div>
+      <div class="tagline-desktop">
+        <span>Instant, Serverless Digital Menus & QR Codes</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="app-workspace">
+    
+    <!-- Left Column: The Editor Form -->
+    <section class="editor-section">
+      <div class="card-header">
+        <h2 class="section-title"><i data-lucide="sliders"></i> Restaurant Setup</h2>
+        <p class="section-subtitle">Configure your brand identity and design theme.</p>
+      </div>
+      
+      <form id="menu-generator-form" onsubmit="return false;">
+        <!-- Brand Details Card -->
+        <div class="editor-card">
+          <div class="form-row split">
+            <div class="form-group">
+              <label for="restaurant-name">Restaurant Name *</label>
+              <input type="text" id="restaurant-name" placeholder="e.g. Bistro de L'Or" required value="Bistronomy">
+            </div>
+            <div class="form-group">
+              <label for="whatsapp-number">WhatsApp Order Number *</label>
+              <div class="input-with-info">
+                <input type="tel" id="whatsapp-number" placeholder="e.g. 15551234567" required value="15551234567">
+                <span class="input-tip">Include country code, digits only (e.g. 1 for US, 44 for UK, 91 for India)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row split">
+            <div class="form-group">
+              <label for="restaurant-phone">Display Phone Number</label>
+              <input type="text" id="restaurant-phone" placeholder="e.g. +1 (555) 019-2834" value="+1 (555) 019-2834">
+            </div>
+            <div class="form-group">
+              <label for="restaurant-address">Address</label>
+              <input type="text" id="restaurant-address" placeholder="e.g. 742 Evergreen Terrace, NY" value="742 Evergreen Terrace, New York">
+            </div>
+          </div>
+
+          <div class="form-row split">
+            <!-- Logo Upload -->
+            <div class="form-group">
+              <label>Restaurant Logo</label>
+              <div class="logo-upload-container">
+                <div class="logo-dropzone" id="logo-dropzone">
+                  <input type="file" id="logo-file" accept="image/*" class="file-input-hidden">
+                  <div class="dropzone-content">
+                    <i data-lucide="image"></i>
+                    <p>Click or drag logo</p>
+                    <span>Auto-resized for speed</span>
+                  </div>
+                  <div class="logo-preview-wrapper hidden" id="logo-preview-wrapper">
+                    <img id="logo-preview-img" src="" alt="Logo Preview">
+                    <button type="button" class="btn-remove-logo" id="btn-remove-logo" title="Remove logo">
+                      <i data-lucide="x"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="preset-selector">
+                  <span class="label-tiny">Or choose preset:</span>
+                  <div class="presets-row">
+                    <button type="button" class="btn-preset active" data-emoji="🍔" title="Burger">🍔</button>
+                    <button type="button" class="btn-preset" data-emoji="🍕" title="Pizza">🍕</button>
+                    <button type="button" class="btn-preset" data-emoji="🍣" title="Sushi">🍣</button>
+                    <button type="button" class="btn-preset" data-emoji="🍷" title="Fine Dining">🍷</button>
+                    <button type="button" class="btn-preset" data-emoji="☕" title="Cafe">☕</button>
+                    <button type="button" class="btn-preset" data-emoji="🍰" title="Bakery">🍰</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Theme Picker -->
+            <div class="form-group">
+              <label>Visual Style Theme</label>
+              <div class="theme-selector-grid">
+                <label class="theme-option active">
+                  <input type="radio" name="theme-color" value="gold" checked>
+                  <span class="theme-swatch gold"></span>
+                  <span class="theme-label">Classic Gold</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="theme-color" value="dark">
+                  <span class="theme-swatch dark"></span>
+                  <span class="theme-label">Midnight Luxe</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="theme-color" value="emerald">
+                  <span class="theme-swatch emerald"></span>
+                  <span class="theme-label">Forest Green</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="theme-color" value="ruby">
+                  <span class="theme-swatch ruby"></span>
+                  <span class="theme-label">Crimson Rose</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menu Section -->
+        <div class="card-header mt-8">
+          <h2 class="section-title"><i data-lucide="utensils-crossorders"></i> Menu Categories & Items</h2>
+          <p class="section-subtitle">Group items into categories like Starters, Mains, and Drinks.</p>
+        </div>
+
+        <div id="categories-container" class="categories-list">
+          <!-- Dynamic Category blocks go here -->
+        </div>
+
+        <div class="editor-actions">
+          <button type="button" class="btn-secondary" id="btn-add-category">
+            <i data-lucide="plus-circle"></i> Add New Category
+          </button>
+          
+          <button type="button" class="btn-primary btn-generate-main" id="btn-generate-menu">
+            <i data-lucide="qr-code"></i> Generate QR Code & Live Link
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Right Column: Interactive smartphone live preview & QR modal -->
+    <section class="preview-section">
+      <div class="sticky-preview-container">
+        
+        <!-- Toggle Tabs for Mobile Layout -->
+        <div class="preview-tabs">
+          <button class="preview-tab active" data-tab="preview"><i data-lucide="smartphone"></i> Live Mockup</button>
+          <button class="preview-tab" data-tab="result" id="tab-result-button" disabled><i data-lucide="award"></i> Generated QR</button>
+        </div>
+
+        <!-- iPhone Mockup Frame -->
+        <div class="phone-mockup-wrapper" id="preview-tab-content">
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen" id="preview-screen">
+              
+              <!-- Simulated Menu Content -->
+              <div class="sim-menu-container theme-gold" id="sim-menu-container">
+                <div class="sim-menu-header">
+                  <div class="sim-logo-area" id="sim-logo-area">🍔</div>
+                  <h3 class="sim-restaurant-name" id="sim-res-name">Bistronomy</h3>
+                  <p class="sim-restaurant-address" id="sim-res-address">742 Evergreen Terrace, New York</p>
+                  <p class="sim-restaurant-phone" id="sim-res-phone"><i data-lucide="phone" class="icon-tiny"></i> +1 (555) 019-2834</p>
+                </div>
+
+                <!-- Sticky simulated navbar -->
+                <div class="sim-category-nav" id="sim-category-nav">
+                  <!-- Dynamic categories scroll -->
+                </div>
+
+                <div class="sim-menu-body" id="sim-menu-body">
+                  <!-- Dynamic menu items preview -->
+                </div>
+
+                <!-- Sim Order Sticky Footer -->
+                <div class="sim-cart-footer">
+                  <div class="sim-cart-info">
+                    <span class="sim-cart-qty">2 items</span>
+                    <span class="sim-cart-total">$32.00</span>
+                  </div>
+                  <button class="sim-btn-order">
+                    Order via WhatsApp <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Code Output Area (Hidden until generated, or active as tab) -->
+        <div class="qr-output-card hidden" id="result-tab-content">
+          <div class="qr-header-success">
+            <div class="success-icon"><i data-lucide="badge-check"></i></div>
+            <h3>Menu Generated Successfully!</h3>
+            <p>Your digital menu is online. Customers can scan to order directly via WhatsApp.</p>
+          </div>
+          
+          <div class="qr-code-holder">
+            <div id="qrcode-canvas"></div>
+            <p class="qr-caption">Point your camera to test</p>
+          </div>
+
+          <div class="actions-grid">
+            <button class="btn-action" id="btn-download-qr">
+              <i data-lucide="download"></i> Download QR
+            </button>
+            <button class="btn-action" id="btn-copy-link">
+              <i data-lucide="copy"></i> Copy Menu Link
+            </button>
+            <a href="#" target="_blank" class="btn-action primary-action" id="btn-visit-menu">
+              <i data-lucide="external-link"></i> View Live Menu
+            </a>
+          </div>
+
+          <div class="generated-url-box">
+            <label>Menu URL</label>
+            <div class="url-input-container">
+              <input type="text" id="generated-url-input" readonly>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Templates (stored in script tags to keep JS clean) -->
+  <template id="category-template">
+    <div class="category-block editor-card" data-category-id="">
+      <div class="category-header-row">
+        <div class="drag-handle"><i data-lucide="grip-vertical"></i></div>
+        <input type="text" class="category-title-input" placeholder="e.g. Starters & Small Plates" value="">
+        <button type="button" class="btn-delete-category" title="Delete Category">
+          <i data-lucide="trash-2"></i>
+        </button>
+      </div>
+      <div class="items-container">
+        <!-- Items go here -->
+      </div>
+      <div class="category-actions">
+        <button type="button" class="btn-add-item">
+          <i data-lucide="plus"></i> Add Item
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <template id="item-template">
+    <div class="menu-item-row" data-item-id="">
+      <div class="item-main-details">
+        <div class="form-row flex-1">
+          <div class="form-group percent-60">
+            <input type="text" class="item-name-input" placeholder="Item Name (e.g. Truffle Fries)" value="">
+          </div>
+          <div class="form-group percent-40">
+            <div class="price-input-wrapper">
+              <span class="currency-symbol">$</span>
+              <input type="number" class="item-price-input" placeholder="0.00" step="0.01" min="0" value="">
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group w-full">
+            <input type="text" class="item-desc-input" placeholder="Optional description (ingredients, spice level, etc.)" value="">
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn-delete-item" title="Delete Item">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+  </template>
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>&copy; 2026 DineQR. Crafted for premium restaurant hospitality. Fully Serverless.</p>
+    </div>
+  </footer>
+
+  <!-- App Main JavaScript Logic -->
+  <script src="js/generator.js"></script>
+</body>
+</html>
