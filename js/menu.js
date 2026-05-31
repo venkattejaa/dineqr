@@ -61,12 +61,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Functions: Decoders & Renderers ---
   
   function decodeMenuData(hash) {
+    // 1. Try modern LZ-String decompression first
     try {
-      // Decompress URL payload using LZ-String
       const decompressed = LZString.decompressFromEncodedURIComponent(hash);
-      return JSON.parse(decompressed);
+      if (decompressed) {
+        return JSON.parse(decompressed);
+      }
     } catch (e) {
-      console.error("Decoding error:", e);
+      console.log("LZ-String decoding failed, trying legacy Base64 fallback...", e);
+    }
+
+    // 2. Backwards-compatible legacy Base64 fallback
+    try {
+      let base64 = hash.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+      const raw = atob(base64);
+      const jsonStr = decodeURIComponent(escape(raw));
+      return JSON.parse(jsonStr);
+    } catch (e) {
+      console.error("All decoding methods failed:", e);
       return null;
     }
   }

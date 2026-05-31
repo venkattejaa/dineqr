@@ -625,14 +625,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let decoded = null;
+    // 1. Try modern LZ-String first
     try {
-      // Decompress URL payload using LZ-String
       const decompressed = LZString.decompressFromEncodedURIComponent(encodedStr);
-      decoded = JSON.parse(decompressed);
+      if (decompressed) {
+        decoded = JSON.parse(decompressed);
+      }
     } catch (e) {
-      console.error(e);
-      alert("Unable to decode link. Please make sure you pasted a valid, unmodified DineQR menu link.");
-      return;
+      console.log("LZ-String decoding failed on import, trying legacy Base64 fallback...", e);
+    }
+
+    // 2. Legacy Base64 fallback
+    if (!decoded) {
+      try {
+        let base64 = encodedStr.replace(/-/g, '+').replace(/_/g, '/');
+        while (base64.length % 4) { base64 += '='; }
+        const raw = atob(base64);
+        const jsonStr = decodeURIComponent(escape(raw));
+        decoded = JSON.parse(jsonStr);
+      } catch (e) {
+        console.error("All decoding methods failed on import:", e);
+        alert("Unable to decode link. Please make sure you pasted a valid, unmodified DineQR menu link.");
+        return;
+      }
     }
 
     // Populate Setup details
