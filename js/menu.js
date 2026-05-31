@@ -116,6 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       btnMap.classList.add('hidden');
     }
+
+    // Watermark setup
+    const watermark = document.getElementById('b2b-watermark');
+    if (watermark) {
+      if (menuData.m === false) {
+        watermark.classList.add('hidden');
+      } else {
+        watermark.classList.remove('hidden');
+      }
+    }
   }
 
   function renderCategoriesAndItems() {
@@ -179,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="item-left">
             <div class="item-header-row">
               <span class="item-title-name">${item.n}</span>
-              <span class="item-title-price">$${parseFloat(item.p || 0).toFixed(2)}</span>
+              <span class="item-title-price">${menuData.cu || '$'}${parseFloat(item.p || 0).toFixed(2)}</span>
             </div>
             ${item.d ? `<p class="item-description">${item.d}</p>` : ''}
           </div>
@@ -242,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCartFooterDisplay() {
     let totalItems = 0;
     let subtotal = 0;
+    const currency = menuData.cu || "$";
 
     Object.values(cart).forEach(item => {
       totalItems += item.qty;
@@ -250,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (totalItems > 0) {
       cartQtyText.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
-      cartTotalText.textContent = `$${subtotal.toFixed(2)}`;
+      cartTotalText.textContent = `${currency}${subtotal.toFixed(2)}`;
       cartFooter.classList.remove('hidden');
     } else {
       cartFooter.classList.add('hidden');
@@ -275,15 +286,16 @@ document.addEventListener('DOMContentLoaded', () => {
       msg += `--------------------------------------\n\n`;
       
       let subtotal = 0;
+      const currency = menuData.cu || "$";
       Object.values(cart).forEach(item => {
         const itemCost = item.qty * item.price;
         subtotal += itemCost;
-        msg += `• *${item.qty}x* ${item.name} _($${item.price.toFixed(2)} ea)_\n`;
-        msg += `  ↳ *Cost: $${itemCost.toFixed(2)}*\n\n`;
+        msg += `• *${item.qty}x* ${item.name} _(${currency}${item.price.toFixed(2)} ea)_\n`;
+        msg += `  ↳ *Cost: ${currency}${itemCost.toFixed(2)}*\n\n`;
       });
 
       msg += `--------------------------------------\n`;
-      msg += `*🧾 Order Subtotal: $${subtotal.toFixed(2)}*\n\n`;
+      msg += `*🧾 Order Subtotal: ${currency}${subtotal.toFixed(2)}*\n\n`;
       msg += `Please confirm my order. My choice is:\n`;
       msg += `☐ Dine-in (Table Number: ____ )\n`;
       msg += `☐ Takeaway / Delivery\n\n`;

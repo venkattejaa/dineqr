@@ -1372,3 +1372,180 @@ input::placeholder {
     order: -1;
   }
 }
+
+/* --- B2B SaaS Extra Refinements --- */
+
+.border-top {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Import collapsible card styling */
+.import-card {
+  border-left: 4px solid var(--dark-luxe) !important;
+  background-color: #fcfbf9;
+  padding: 1.25rem 1.5rem !important;
+  cursor: pointer;
+  user-select: none;
+}
+
+.import-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.import-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.import-icon {
+  color: var(--dark-luxe);
+  width: 24px;
+  height: 24px;
+}
+
+.import-text-wrapper h3 {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.import-text-wrapper p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.btn-toggle-icon-only {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.btn-toggle-icon-only i {
+  width: 20px;
+  height: 20px;
+  transition: var(--transition);
+}
+
+.btn-toggle-icon-only.rotated i {
+  transform: rotate(180deg);
+}
+
+.import-body {
+  margin-top: 1.25rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.25rem;
+  animation: slideDown 0.3s ease;
+  cursor: default;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.import-input-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.import-input-row input {
+  flex: 1;
+}
+
+.import-input-row button {
+  white-space: nowrap;
+}
+
+/* Premium iOS Toggle Switch */
+.white-label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d1ceca;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--primary);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+.toggle-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggle-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.toggle-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.currency-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+

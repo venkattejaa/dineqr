@@ -553,3 +553,39 @@ body {
   width: 16px;
   height: 16px;
 }
+
+/* --- B2B White-Label Footer --- */
+.b2b-menu-footer {
+  text-align: center;
+  padding: 2.5rem 1.5rem 1.5rem;
+  background: transparent;
+  width: 100%;
+  margin-top: auto;
+}
+
+.b2b-footer-link {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-light);
+  text-decoration: none;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  transition: var(--transition);
+  display: inline-block;
+  opacity: 0.75;
+}
+
+.b2b-footer-link:hover {
+  opacity: 1;
+  color: var(--primary);
+}
+
+.b2b-footer-link span {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.menu-app-wrapper.theme-dark .b2b-footer-link span {
+  color: #ffffff;
+}
+

@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Theme elements
   const themeRadioButtons = document.querySelectorAll('input[name="theme-color"]');
+
+  // B2B SaaS Extra Inputs
+  const inputCurrency = document.getElementById('currency-symbol');
+  const toggleWatermark = document.getElementById('toggle-watermark');
+  
+  // Import elements
+  const btnToggleImport = document.getElementById('btn-toggle-import');
+  const importChevron = document.getElementById('import-chevron');
+  const importBodyContainer = document.getElementById('import-body-container');
+  const inputImportUrl = document.getElementById('import-url-input');
+  const btnSubmitImport = document.getElementById('btn-submit-import');
   
   // Preview Elements
   const simMenuContainer = document.getElementById('sim-menu-container');
@@ -190,6 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Download QR
     btnDownloadQr.addEventListener('click', downloadQRCodeImage);
+
+    // B2B Currency and Watermark live updates
+    inputCurrency.addEventListener('input', updateLivePreview);
+    toggleWatermark.addEventListener('change', updateLivePreview);
+
+    // Collapsible Import card toggle
+    btnToggleImport.addEventListener('click', () => {
+      importBodyContainer.classList.toggle('hidden');
+      importChevron.classList.toggle('rotated');
+    });
+
+    // Import submit action
+    btnSubmitImport.addEventListener('click', handleImportMenu);
   }
 
   // --- Functions: Logo Image Compression (Serverless ready) ---
@@ -393,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="sim-item-details">
               <div class="sim-item-name-row">
                 <span class="sim-item-name">${itemName}</span>
-                <span class="sim-item-price">$${parseFloat(itemPrice || 0).toFixed(2)}</span>
+                <span class="sim-item-price">${inputCurrency.value || '$'}${parseFloat(itemPrice || 0).toFixed(2)}</span>
               </div>
               ${itemDesc ? `<p class="sim-item-desc">${itemDesc}</p>` : ''}
             </div>
@@ -446,6 +470,8 @@ document.addEventListener('DOMContentLoaded', () => {
       a: inputResAddress.value.trim(),
       l: selectedLogo, // Base64 or Emoji
       t: currentTheme,
+      cu: inputCurrency.value.trim() || "$",
+      m: toggleWatermark.checked,
       c: []
     };
 
@@ -582,6 +608,108 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+  }
+
+  // --- Functions: Import & Recall Existing Menu Data (Serverless) ---
+  function handleImportMenu() {
+    let rawInput = inputImportUrl.value.trim();
+    if (!rawInput) {
+      alert("Please paste a generated menu link first.");
+      return;
+    }
+
+    let encodedStr = rawInput;
+    if (rawInput.includes('?d=')) {
+      encodedStr = rawInput.split('?d=')[1].split('&')[0];
+    } else if (rawInput.includes('&d=')) {
+      encodedStr = rawInput.split('&d=')[1].split('&')[0];
+    }
+
+    let decoded = null;
+    try {
+      // Normalize base64 URL format
+      let base64 = encodedStr.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) { base64 += '='; }
+      const raw = atob(base64);
+      const jsonStr = decodeURIComponent(escape(raw));
+      decoded = JSON.parse(jsonStr);
+    } catch (e) {
+      console.error(e);
+      alert("Unable to decode link. Please make sure you pasted a valid, unmodified DineQR menu link.");
+      return;
+    }
+
+    // Populate Setup details
+    inputResName.value = decoded.n || "";
+    inputResPhone.value = decoded.p || "";
+    inputResAddress.value = decoded.a || "";
+    inputWhatsapp.value = decoded.w || "";
+    
+    // Unpack B2B options
+    inputCurrency.value = decoded.cu || "$";
+    toggleWatermark.checked = decoded.m !== false;
+
+    // Unpack Theme
+    currentTheme = decoded.t || "gold";
+    themeRadioButtons.forEach(radio => {
+      radio.checked = (radio.value === currentTheme);
+    });
+    document.querySelectorAll('.theme-option').forEach(opt => {
+      opt.classList.remove('active');
+      if (opt.querySelector('input').checked) {
+        opt.classList.add('active');
+      }
+    });
+
+    // Unpack Logo
+    selectedLogo = decoded.l || "🍔";
+    if (selectedLogo.startsWith('data:image/')) {
+      logoType = "image";
+      logoPreviewImg.src = selectedLogo;
+      logoPreviewWrapper.classList.remove('hidden');
+      presetButtons.forEach(b => b.classList.remove('active'));
+    } else {
+      logoType = "emoji";
+      logoPreviewWrapper.classList.add('hidden');
+      logoFileInput.value = '';
+      presetButtons.forEach(b => {
+        b.classList.remove('active');
+        if (b.getAttribute('data-emoji') === selectedLogo) {
+          b.classList.add('active');
+        }
+      });
+    }
+
+    // Unpack categories and items
+    categoriesContainer.innerHTML = '';
+    if (decoded.c && Array.isArray(decoded.c)) {
+      decoded.c.forEach((cat, catIdx) => {
+        const catData = {
+          id: "cat_" + catIdx + "_" + Date.now(),
+          title: cat.n,
+          items: (cat.i || []).map((item, itemIdx) => ({
+            id: "item_" + catIdx + "_" + itemIdx + "_" + Date.now(),
+            name: item.n,
+            price: item.p ? item.p.toString() : "",
+            desc: item.d || ""
+          }))
+        };
+        addCategoryBlock(catData);
+      });
+    }
+
+    // Reset UI and close import card
+    importBodyContainer.classList.add('hidden');
+    importChevron.classList.remove('rotated');
+    inputImportUrl.value = '';
+
+    // Update Live Mockup
+    updateLivePreview();
+    
+    // Smooth scroll to top of form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    alert("Existing menu imported successfully! You can now edit any details, colors, or prices, and generate an updated QR code.");
   }
 
   // --- Run Initialization ---

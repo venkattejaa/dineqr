@@ -44,6 +44,30 @@
     
     <!-- Left Column: The Editor Form -->
     <section class="editor-section">
+      
+      <!-- Import Existing Menu Card -->
+      <div class="import-card editor-card">
+        <div class="import-header" id="btn-toggle-import">
+          <div class="import-title">
+            <i data-lucide="folder-open" class="import-icon"></i>
+            <div class="import-text-wrapper">
+              <h3>Edit Existing Menu</h3>
+              <p>Paste a generated menu URL to load and modify its items.</p>
+            </div>
+          </div>
+          <button type="button" class="btn-toggle-icon-only"><i data-lucide="chevron-down" id="import-chevron"></i></button>
+        </div>
+        <div class="import-body hidden" id="import-body-container">
+          <div class="import-input-row">
+            <input type="text" id="import-url-input" placeholder="e.g. https://.../menu.html?d=eyJu...">
+            <button type="button" class="btn-primary" id="btn-submit-import">
+              <i data-lucide="download"></i> Load Menu
+            </button>
+          </div>
+          <span class="input-tip mt-1">This will unpack all details, logo configurations, and item pricing back into the form.</span>
+        </div>
+      </div>
+
       <div class="card-header">
         <h2 class="section-title"><i data-lucide="sliders"></i> Restaurant Setup</h2>
         <p class="section-subtitle">Configure your brand identity and design theme.</p>
@@ -137,6 +161,32 @@
               </div>
             </div>
           </div>
+
+          <div class="form-row split mt-4 border-top">
+            <!-- B2B Watermark -->
+            <div class="form-group percent-60">
+              <label>White-Label Branding</label>
+              <div class="white-label-wrapper">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-watermark" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <div class="toggle-text-block">
+                  <span class="toggle-title">Show "Powered by DineQR"</span>
+                  <span class="toggle-desc">Subtle footer link on the menu to promote your brand.</span>
+                </div>
+              </div>
+            </div>
+            <!-- Currency Symbol -->
+            <div class="form-group percent-40">
+              <label for="currency-symbol">Menu Currency</label>
+              <div class="currency-input-container">
+                <input type="text" id="currency-symbol" value="$" placeholder="e.g. $, ₹, €, £, KD" style="max-width: 120px;">
+                <span class="input-tip">Symbol displayed next to pricing</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- Menu Section -->
