@@ -62,15 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function decodeMenuData(hash) {
     try {
-      // Reverse URL-safe Base64 transformation
-      let base64 = hash.replace(/-/g, '+').replace(/_/g, '/');
-      while (base64.length % 4) {
-        base64 += '=';
-      }
-      const raw = atob(base64);
-      // Decodes UTF-8 correctly
-      const jsonStr = decodeURIComponent(escape(raw));
-      return JSON.parse(jsonStr);
+      // Decompress URL payload using LZ-String
+      const decompressed = LZString.decompressFromEncodedURIComponent(hash);
+      return JSON.parse(decompressed);
     } catch (e) {
       console.error("Decoding error:", e);
       return null;

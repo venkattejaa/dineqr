@@ -505,12 +505,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // 3. Serialize and Compress Data using URI Safe Base64
+    // 3. Serialize and Compress Data using URI Safe LZ-String (extremely high compression for short scannable QR codes)
     let urlSafeBase64 = "";
     try {
       const jsonStr = JSON.stringify(menuData);
-      const rawBase64 = btoa(unescape(encodeURIComponent(jsonStr)));
-      urlSafeBase64 = rawBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      urlSafeBase64 = LZString.compressToEncodedURIComponent(jsonStr);
     } catch (err) {
       console.error("Encoding failed: ", err);
       alert("An error occurred during menu packing. Please check if your custom logo is too large.");
@@ -627,12 +626,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let decoded = null;
     try {
-      // Normalize base64 URL format
-      let base64 = encodedStr.replace(/-/g, '+').replace(/_/g, '/');
-      while (base64.length % 4) { base64 += '='; }
-      const raw = atob(base64);
-      const jsonStr = decodeURIComponent(escape(raw));
-      decoded = JSON.parse(jsonStr);
+      // Decompress URL payload using LZ-String
+      const decompressed = LZString.decompressFromEncodedURIComponent(encodedStr);
+      decoded = JSON.parse(decompressed);
     } catch (e) {
       console.error(e);
       alert("Unable to decode link. Please make sure you pasted a valid, unmodified DineQR menu link.");
