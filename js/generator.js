@@ -535,11 +535,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     new QRCode(canvasContainer, {
       text: activeMenuUrl,
-      width: 180,
-      height: 180,
-      colorDark: "#121212",
+      width: 256,
+      height: 256,
+      colorDark: "#000000",
       colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
+      correctLevel: QRCode.CorrectLevel.L // Low error correction = much larger, less dense dots = super easy to scan
     });
 
     // Enable and switch to Result tab
